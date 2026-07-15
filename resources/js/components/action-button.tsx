@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 interface ButtonProps {
     titulo:string;
     action: ()=>void;
-    icon:LucideIcon;
+    icon?:LucideIcon;
     disabledAction?:boolean;
     type?:any;
 }
@@ -21,7 +21,7 @@ export const ActionButton = ({titulo, action, icon, disabledAction, type}:Button
                 className="cursor-pointer font-bold transition duration-500"
                 disabled={disabledAction}
                 type={type}>
-                {titulo}<IconRendered icon={icon}/>
+                {titulo}{icon && <IconRendered icon={icon}/>}
             </Button>
         </>
     )

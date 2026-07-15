@@ -7,8 +7,9 @@ Route::inertia('/', 'welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [TasksController::class, 'index'])->name('dashboard');
-    Route::post('/dashboard', [TasksController::class, 'store'])->name('tasks.store');
-    Route::put('/dashboard', [TasksController::class, 'update'])->name('tasks.update');
+    Route::post('/tasks', [TasksController::class, 'store'])->name('tasks.store');
+    Route::put('/tasks/{tarefa}', [TasksController::class, 'update'])->name('tasks.update');
+    Route::delete('/tasks/{tarefa}', [TasksController::class, 'destroy'])->name('tasks.destroy');
 });
 
 require __DIR__.'/settings.php';

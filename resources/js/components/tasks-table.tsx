@@ -1,4 +1,5 @@
-import { Pen, Trash2 } from "lucide-react";
+import { Pen, Trash2, CheckCircle2, Clock } from "lucide-react";
+import React from "react";
 import { 
          Table,
          TableHeader,
@@ -21,10 +22,11 @@ interface Props{
     modalAction:(arg:boolean)=>void,
     onOpen:(value:boolean)=>void,
     setTask:(value:Tarefas)=>void,
+    onOpenConfirm: (value:boolean)=>void;
 }
 
 
-export const TasksTable = ({tasksData, modalAction, onOpen, setTask}:Props) =>{
+export const TasksTable = ({tasksData, modalAction, onOpen, setTask, onOpenConfirm}:Props) =>{
     return(
         <>
             <Table className="border rounded-2xl">
@@ -44,7 +46,12 @@ export const TasksTable = ({tasksData, modalAction, onOpen, setTask}:Props) =>{
                                 <TableCell>{item.id}</TableCell>
                                 <TableCell>{item.titulo}</TableCell>
                                 <TableCell>{item.descricao}</TableCell>
-                                <TableCell>{item.concluida ? "concluida" : "pendete"}</TableCell>
+                                <TableCell>
+                                    <span className={`flex items-center gap-1 w-fit rounded-2xl px-1 ${item.concluida ? "bg-green-400" : "bg-red-400"}`}>
+                                        {item.concluida ? <CheckCircle2 size={15}/> : <Clock size={15}/>}
+                                        <span>{item.concluida ? "Concluida" : "Pendete"}</span>
+                                    </span>
+                                </TableCell>
                                 <TableCell className="flex gap-2">
                                     <button className="cursor-pointer">
                                         <Pen size={17} onClick={()=>{
@@ -53,7 +60,12 @@ export const TasksTable = ({tasksData, modalAction, onOpen, setTask}:Props) =>{
                                             setTask(item)
                                         }}/>
                                     </button>
-                                    <button className="cursor-pointer">
+                                    <button 
+                                    className="cursor-pointer"
+                                    onClick={()=>{
+                                            onOpenConfirm(true)
+                                            setTask(item)
+                                        }}>
                                         <Trash2 size={17} className="text-red-600"/>
                                     </button>
                                 </TableCell>

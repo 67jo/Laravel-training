@@ -1,5 +1,4 @@
 import { useForm, usePage } from "@inertiajs/react";
-import { router } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 import React from "react";
 import { ActionButton } from "./action-button";
@@ -38,7 +37,7 @@ export const ActionModal = ({open, onClose, titulo, descricao, isChangeAction, t
         e.preventDefault()
 
         if(isChangeAction){
-            post('/dashboard', {
+            post('/tasks', {
                 onSuccess:()=>{
                     onClose()
                     reset()
@@ -48,7 +47,12 @@ export const ActionModal = ({open, onClose, titulo, descricao, isChangeAction, t
             return;
         }
         
-        put(`dashboard/${task?.id}/edit`)
+        put(`/tasks/${task?.id}`,{
+            onSuccess:()=>{
+                onClose()
+                reset()
+            }
+        })
     }
 
     return(

@@ -9,7 +9,7 @@ use App\Models\Tarefas;
 class TasksController extends Controller
 {
     public function index(){
-        $tarefas = Tarefas::all();
+        $tarefas = Tarefas::where('user_id', auth()->id())->get();
 
         return Inertia::render('dashboard',[
             'tarefas' => $tarefas,
@@ -29,7 +29,7 @@ class TasksController extends Controller
         ]);
         Tarefas::create($request->only('titulo','descricao','concluida', 'user_id'));
 
-        return redirect()->route('tasks.store');
+        return redirect()->route('dashboard');
     }
 
     public function edit(Tarefas $tarefa){
@@ -39,15 +39,25 @@ class TasksController extends Controller
     }
 
     public function update(Request $request, Tarefas $tarefa){
-        $request->validate([
+        $validated = $request->validate([
             'titulo'=>'required|string|max:100',
             'descricao'=>'nullable|string',
             'concluida'=>'boolean',
         ]);
 
-        $tarefa->update($request->only('titulo', 'descricao', 'concluida'));
+        $tarefa->update($validated);
 
-        return redirect()->route('tasks.update');
+        return redirect()->route('dashboard');
         
+    }
+
+    public function show(Tarefas $tarefas){
+        return response()->json($tarefas);
+    }
+
+    public function destroy(Tarefas $tarefa){
+        $tarefa->delete();
+
+        return redirect()->route('dashboard');
     }
 }
